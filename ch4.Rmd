@@ -1,0 +1,61 @@
+---
+title: "Chapter 4"
+author: "Christopher Chan"
+date: "`r format(Sys.time(), '%H:%M %d %B %Y')`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+```
+
+
+### 4.1
+```{r}
+set.seed(4)
+
+pos <- 
+  replicate(100, runif(16, -1, 1)) %>%
+  as_tibble() %>%
+  rbind(0, .) %>%
+  mutate(step = 0:16) %>%
+  gather(key, value, -step) %>%
+  mutate(person = rep(1:100, each = 17)) %>%
+  group_by(person) %>%
+  mutate(position = cumsum(value)) %>%
+  ungroup()
+
+glimpse(pos)
+```
+
+```{r}
+ggplot(pos, aes(step, position, group=person)) +
+  geom_line(aes(color = person < 2, alpha = person < 2)) + 
+  geom_vline(xintercept = c(4, 8, 16), linetype = 2) +
+  scale_color_manual(values = c("skyblue4", "black")) +
+  scale_alpha_manual(values = c(1/5, 1)) +
+  scale_x_continuous("step number", breaks = c(0, 4, 8, 12, 16)) +
+  theme(legend.position = "none")
+```
+
+### 4.2
+
+### 4.3
+- Define distributions by $\mu$ and $\sigma$ and rank by plausibility.
+
+
+
+
+
+
+
+
+
+
+
+
+
