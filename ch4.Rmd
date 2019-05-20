@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
+library(brms)
 ```
 
 
@@ -45,10 +46,16 @@ ggplot(pos, aes(step, position, group=person)) +
 ### 4.2
 
 ### 4.3
-- Define distributions by $\mu$ and $\sigma$ and rank by plausibility.
+- Define distributions by $\mu$ and $\sigma$ and rank by plausibility, aka our 
+posterior plausibility.
 
+```{r}
+df <- read_delim('data/Howell1.csv', delim = ';')
 
+precis(df)
+```
 
+https://stackoverflow.com/questions/16501507/lib-unspecified-error-in-loadnamespace
 
 
 
