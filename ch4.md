@@ -1,10 +1,11 @@
 Chapter 4
 ================
 Christopher Chan
-16:31 20 May 2019
+11:01 21 May 2019
 
 ``` r
 library(tidyverse)
+library(brms)
 ```
 
 ### 4.1
@@ -24,7 +25,8 @@ pos <-
   ungroup()
 ```
 
-    ## Warning: package 'bindrcpp' was built under R version 3.4.4
+    ## Warning: `as_tibble.matrix()` requires a matrix with column names or a `.name_repair` argument. Using compatibility `.name_repair`.
+    ## This warning is displayed once per session.
 
 ``` r
 glimpse(pos)
@@ -54,4 +56,16 @@ ggplot(pos, aes(step, position, group=person)) +
 
 ### 4.3
 
--   Define distributions by *μ* and *σ* and rank by plausibility.
+-   Define distributions by *μ* and *σ* and rank by plausibility, aka our posterior plausibility.
+
+``` r
+df <- read_delim('data/Howell1.csv', delim = ';')
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   height = col_double(),
+    ##   weight = col_double(),
+    ##   age = col_double(),
+    ##   male = col_double()
+    ## )

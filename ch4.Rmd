@@ -51,11 +51,8 @@ posterior plausibility.
 
 ```{r}
 df <- read_delim('data/Howell1.csv', delim = ';')
-
-precis(df)
 ```
 
-https://stackoverflow.com/questions/16501507/lib-unspecified-error-in-loadnamespace
 
 
 
