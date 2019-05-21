@@ -1,7 +1,7 @@
 Chapter 4
 ================
 Christopher Chan
-11:01 21 May 2019
+12:01 21 May 2019
 
 ``` r
 library(tidyverse)
@@ -57,6 +57,10 @@ ggplot(pos, aes(step, position, group=person)) +
 ### 4.3
 
 -   Define distributions by *μ* and *σ* and rank by plausibility, aka our posterior plausibility.
+-   The model:
+    *h*<sub>*i*</sub> ~ Normal(*μ*, *σ*) \[likelihood\]
+    *μ* ~ Normal(178, 20) \[*μ* prior\]
+    $\\simga$ ~ Uniform(0, 50) \[*σ* prior\]
 
 ``` r
 df <- read_delim('data/Howell1.csv', delim = ';')

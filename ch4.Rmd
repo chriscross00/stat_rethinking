@@ -48,9 +48,29 @@ ggplot(pos, aes(step, position, group=person)) +
 ### 4.3
 - Define distributions by $\mu$ and $\sigma$ and rank by plausibility, aka our 
 posterior plausibility.
+- The model:  
+$h_i$ ~ Normal$(\mu, \sigma)$ [likelihood]  
+$\mu$ ~ Normal(178, 20) [$\mu$ prior]  
+$\sigma$ ~ Uniform(0, 50) [$\sigma$ prior]  
 
 ```{r}
 df <- read_delim('data/Howell1.csv', delim = ';')
+
+```
+
+```{r}
+# Plotting priors
+ggplot(tibble(x = seq(100, 250, by = 0.1)),
+       aes(x, dnorm(x, mean = 178, sd = 20))) +
+  geom_line() +
+  ggtitle("Prior density")
+
+
+ggplot(tibble(x = seq(-10, 60, by = 0.1)),
+       aes(x, dunif(x, 0, 50))) +
+  geom_line() +
+  ggtitle('Prior sigmas')
+
 ```
 
 
