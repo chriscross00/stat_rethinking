@@ -56,6 +56,9 @@ $\sigma$ ~ Uniform(0, 50) [$\sigma$ prior]
 ```{r}
 df <- read_delim('data/Howell1.csv', delim = ';')
 
+df2 <-
+  df %>%
+  filter(age >= 18)
 ```
 
 ```{r}
@@ -107,12 +110,63 @@ d_grid <- tibble(mu = seq(140, 160, length.out = n),
                  sigma = seq(4, 9, length.out = n)) %>%
   expand(mu, sigma)
 
+grid_function <- function(mu, sigma){
+  dnorm(df2$height, mu, sigma, log = TRUE) %>%
+  sum()
+}
+
+d_grid <- 
+  d_grid %>%
+  mutate(log_likelihood = map2(mu, sigma, grid_function)) %>%
+  unnest() %>%
+  mutate(prior_mu = dnorm(mu, mean = 178, sd = 20, log = TRUE),
+         prior_sigma = dunif(sigma, 0, 50, log = TRUE)) %>%
+  mutate(product = log_likelihood + prior_mu + prior_sigma) %>%
+  mutate(probability = exp(product - max(product)))
+
 head(d_grid)
 ```
 
+```{r}
+ggplot(d_grid, aes(mu, sigma, z = probability)) +
+  geom_contour() +
+  labs(x = expression(mu),
+       y = expression(sigma)) +
+  coord_cartesian(xlim = range(d_grid$mu),
+                  ylim = range(d_grid$sigma))
+```
 
+Sampling posterior
+```{r}
+set.seed(4)
 
+d_grid_sample <- 
+  d_grid %>%
+  sample_n(1e4, replace = TRUE, weight = probability)
 
+ggplot(d_grid_sample, aes(mu, sigma)) +
+  geom_point(alpha = 0.05)
+```
+
+Distribution/confidence in posterior
+```{r}
+d_grid_sample %>%
+  select(mu, sigma) %>%
+  gather() %>%
+  
+  ggplot(aes(value)) +
+    geom_density(fill = 'grey33') +
+    facet_wrap(~key, scales = 'free')
+```
+
+Modelling with brm()
+```{r}
+b4.1 <- brm(data = df2, family = gaussian,
+            height ~ 1,
+            prior = c(prior(normal(178, 20), class = Intercept),
+                      prior(uniform(0, 50), class = sigma)),
+            iter = 31000, warmup = 30000, chain = 4, cores = 4, seed = 4)
+```
 
 
 
