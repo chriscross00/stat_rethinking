@@ -73,7 +73,42 @@ ggplot(tibble(x = seq(-10, 60, by = 0.1)),
 
 ```
 
+Drawing samples from prior distribution
+```{r}
+set.seed(4)
 
+n <- 1e4
+
+tibble(sample_mu = rnorm(n, mean = 178, sd = 20),
+       sample_sigma = runif(n, min = 0, max = 50)) %>%
+  mutate(x = rnorm(n, mean = sample_mu, sd = sample_sigma)) %>%
+  ggplot(aes(x)) +
+    geom_density(fill = 'black') +
+    scale_y_continuous() +
+      labs(subtitle = expression(paste("Prior predictive distribution for ", 
+                                       italic(h[i]))), x = NULL)
+
+
+# larger sigma
+tibble(sample_mu = rnorm(n, mean = 178, sd = 20),
+       sample_sigma = runif(n, min = 0, max = 100)) %>%
+  mutate(x = rnorm(n, mean = sample_mu, sd = sample_sigma)) %>%
+  ggplot(aes(x)) +
+    geom_density(fill = 'black') +
+    scale_y_continuous() +
+      labs(subtitle = expression(paste("Prior predictive distribution for ", 
+                                       italic(h[i]))), x = NULL)
+```
+
+```{r}
+n <- 200
+
+d_grid <- tibble(mu = seq(140, 160, length.out = n),
+                 sigma = seq(4, 9, length.out = n)) %>%
+  expand(mu, sigma)
+
+head(d_grid)
+```
 
 
 
