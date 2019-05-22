@@ -12,9 +12,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(brms)
+library(rethinking)
 ```
 
-
+https://discourse.mc-stan.org/t/compilation-error/5775/10
+https://github.com/stan-dev/rstan/issues/569
+https://discourse.mc-stan.org/t/c-14-standard-requested-but-cxx14-is-not-defined/5998
 ### 4.1
 ```{r}
 set.seed(4)
